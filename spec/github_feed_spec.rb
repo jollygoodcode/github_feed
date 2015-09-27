@@ -16,7 +16,8 @@ RSpec.describe GithubFeed do
     end
 
     before do
-      expect(GithubEvent).to receive(:all).with("rails/rails") { fake_events }
+      expect(GithubEvent).to receive(:all)
+        .with("rails/rails", only: "IssueCommentEvent") { fake_events }
     end
 
     it "prints from API" do

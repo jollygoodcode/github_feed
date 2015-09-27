@@ -8,16 +8,8 @@ class GithubFeed
   end
 
   def recent_comments
-    events = GithubEvent.all(@repo_name)
-
-    comments =
-      events.map do |event|
-        # next if event["type"] != "IssueCommentEvent"
-
-        event.to_s
-      end
-
-    comments.compact.join("\n")
+    events = GithubEvent.all(@repo_name, only: "IssueCommentEvent")
+    events.map { |event| event.to_s }.join("\n")
   end
 end
 
