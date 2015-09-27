@@ -9,4 +9,12 @@ RSpec.describe GithubFeed do
       expect(feed.repo_name).to eq "rails/rails"
     end
   end
+
+  describe "#recent_comments" do
+    it "prints from API" do
+      feed = GithubFeed.new("rails/rails")
+
+      expect(feed.recent_comments).to match "made a comment on Issue"
+    end
+  end
 end
