@@ -1,0 +1,3 @@
+class GithubFeed
+
+end
