@@ -42,7 +42,11 @@ RSpec.describe GithubEvent do
     end
 
     it "returns results from API" do
-      expect(GithubEvent.all("rails/rails")).to eq JSON.parse(fake_json)
+      events = GithubEvent.all("rails/rails")
+
+      expect(events.count).to eq 30
+      expect(events.first).to be_an_instance_of(GithubEvent)
+      expect(events.first.raw_data).to eq JSON.parse(fake_json).first
     end
   end
 end
