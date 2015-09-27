@@ -12,7 +12,7 @@ RSpec.describe GithubFeed do
 
   describe "#recent_comments" do
     before do
-      expect(HTTP).to receive(:get) { File.read("spec/fixtures/events.json") }
+      expect(GithubEvent).to receive(:all).with("rails/rails") { JSON.parse(File.read("spec/fixtures/events.json")) }
     end
 
     it "prints from API" do
