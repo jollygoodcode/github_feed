@@ -94,3 +94,6 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 
 end
+
+require "webmock/rspec"
+WebMock.disable_net_connect!
