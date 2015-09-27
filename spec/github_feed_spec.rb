@@ -49,4 +49,14 @@ RSpec.describe GithubEvent do
       expect(events.first.raw_data).to eq JSON.parse(fake_json).first
     end
   end
+
+  describe "#to_s" do
+    let(:event) { GithubEvent.new(JSON.parse(fake_json).first) }
+
+    it "formats data" do
+      expected = "27 Sep 2015\ntimbreitkreutz made a comment on Issue #20602\nat https://github.com/rails/rails/issues/20602#issuecomment-143573857"
+
+      expect(event.to_s).to eq expected
+    end
+  end
 end
