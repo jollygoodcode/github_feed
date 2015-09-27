@@ -1,3 +1,5 @@
+require "http"
+
 class GithubFeed
   attr_reader :repo_name
 
@@ -6,6 +8,8 @@ class GithubFeed
   end
 
   def recent_comments
+    HTTP.get("https://api.github.com/repos/rails/rails/events")
+
     "made a comment on Issue"
   end
 end
