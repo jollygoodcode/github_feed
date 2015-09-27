@@ -25,5 +25,6 @@ end
 
 class GithubEvent
   def self.all(repo_name)
+    JSON.parse(HTTP.get("https://api.github.com/repos/#{repo_name}/events"))
   end
 end
