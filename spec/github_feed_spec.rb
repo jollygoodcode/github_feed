@@ -12,13 +12,7 @@ RSpec.describe GithubFeed do
 
   describe "#recent_comments" do
     before do
-      stub_request(
-        :get, "https://api.github.com/repos/rails/rails/events"
-      ).with(
-        headers: { "User-Agent"=>"http.rb/0.9.7" }
-      ).to_return(
-        status: 200, body: File.open("spec/fixtures/events.json")
-      )
+      expect(HTTP).to receive(:get) { File.read("spec/fixtures/events.json") }
     end
 
     it "prints from API" do
