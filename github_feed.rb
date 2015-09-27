@@ -14,10 +14,6 @@ class GithubFeed
       events.map do |event|
         # next if event["type"] != "IssueCommentEvent"
 
-        # comment = "#{Date.parse(event['created_at']).strftime("%d %b %Y")}\n"
-        # comment += "#{event['actor']['login']} made a comment on Issue ##{event['payload']['issue']['number']}\n"
-        # comment += "at #{event['payload']['comment']['html_url']}"
-
         event.to_s
       end
 
@@ -36,5 +32,11 @@ class GithubEvent
     events =
       JSON.parse(HTTP.get("https://api.github.com/repos/#{repo_name}/events"))
     events.map { |event| GithubEvent.new(event) }
+  end
+
+  def to_s
+    "#{Date.parse(raw_data['created_at']).strftime("%d %b %Y")}\n" \
+    "#{raw_data['actor']['login']} made a comment on Issue ##{raw_data['payload']['issue']['number']}\n" \
+    "at #{raw_data['payload']['comment']['html_url']}"
   end
 end
