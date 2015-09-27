@@ -8,8 +8,19 @@ class GithubFeed
   end
 
   def recent_comments
-    HTTP.get("https://api.github.com/repos/rails/rails/events")
+    events = JSON.parse(
+      HTTP.get("https://api.github.com/repos/#{repo_name}/events")
+    )
 
-    "made a comment on Issue"
+    comments =
+      events.map do |event|
+        next if event["type"] != "IssueCommentEvent"
+
+        comment = "#{Date.parse(event['created_at']).strftime("%d %b %Y")}\n"
+        comment += "#{event['actor']['login']} made a comment on Issue ##{event['payload']['issue']['number']}\n"
+        comment += "at #{event['payload']['comment']['html_url']}"
+      end
+
+    comments.compact.join("\n")
   end
 end
