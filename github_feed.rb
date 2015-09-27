@@ -26,7 +26,15 @@ class GithubFeed
 end
 
 class GithubEvent
+  attr_reader :raw_data
+
+  def initialize(raw_data)
+    @raw_data = raw_data
+  end
+
   def self.all(repo_name)
-    JSON.parse(HTTP.get("https://api.github.com/repos/#{repo_name}/events"))
+    events =
+      JSON.parse(HTTP.get("https://api.github.com/repos/#{repo_name}/events"))
+    events.map { |event| GithubEvent.new(event) }
   end
 end
