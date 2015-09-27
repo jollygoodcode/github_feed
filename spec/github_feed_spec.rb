@@ -24,7 +24,7 @@ RSpec.describe GithubFeed do
     it "prints from API" do
       feed = GithubFeed.new("rails/rails")
 
-      expect(feed.recent_comments).to match "made a comment on Issue"
+      expect(feed.recent_comments).to match "sgrif made a comment on Issue #21785"
     end
   end
 end
