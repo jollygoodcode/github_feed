@@ -8,9 +8,7 @@ class GithubFeed
   end
 
   def recent_comments
-    events = JSON.parse(
-      HTTP.get("https://api.github.com/repos/#{repo_name}/events")
-    )
+    events = GithubEvent.all(@repo_name)
 
     comments =
       events.map do |event|
@@ -22,5 +20,10 @@ class GithubFeed
       end
 
     comments.compact.join("\n")
+  end
+end
+
+class GithubEvent
+  def self.all(repo_name)
   end
 end
