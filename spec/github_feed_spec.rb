@@ -11,13 +11,8 @@ RSpec.describe GithubFeed do
   end
 
   describe "#recent_comments" do
-    let(:fake_events) { [ double(:event, to_s: event_to_s) ] }
-    let(:event_to_s) do
-      <<-COMMENT
-27 Sep 2015
-sgrif made a comment on Issue #21785
-at https://github.com/rails/rails/pull/21785#issuecomment-143571730
-      COMMENT
+    let(:fake_events) do
+      [double(:event, to_s: "abc"), double(:event, to_s: "def")]
     end
 
     before do
@@ -27,7 +22,7 @@ at https://github.com/rails/rails/pull/21785#issuecomment-143571730
     it "prints from API" do
       feed = GithubFeed.new("rails/rails")
 
-      expect(feed.recent_comments).to match event_to_s
+      expect(feed.recent_comments).to match "abc\ndef"
     end
   end
 end
