@@ -29,3 +29,23 @@ at https://github.com/rails/rails/pull/21785#issuecomment-143571730
     end
   end
 end
+
+RSpec.describe GithubEvent do
+  let(:fake_json) { File.read("spec/fixtures/events.json") }
+
+  describe ".all" do
+    before do
+      stub_request(
+        :get, "https://api.github.com/repos/rails/rails/events"
+      ).with(
+        headers: { "User-Agent" => "http.rb/0.9.7" }
+      ).to_return(
+        status: 200, body: fake_json
+      )
+    end
+
+    it "returns results from API" do
+      expect(GithubEvent.all("rails/rails")).to eq JSON.parse(fake_json)
+    end
+  end
+end
