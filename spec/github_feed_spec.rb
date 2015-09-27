@@ -48,6 +48,13 @@ RSpec.describe GithubEvent do
       expect(events.first).to be_an_instance_of(GithubEvent)
       expect(events.first.raw_data).to eq JSON.parse(fake_json).first
     end
+
+    it "filters results" do
+      events = GithubEvent.all("rails/rails", only: "IssueCommentEvent")
+
+      expect(events.count).to eq 10
+      expect(events.map(&:type).uniq).to eq ["IssueCommentEvent"]
+    end
   end
 
   describe "#to_s" do
