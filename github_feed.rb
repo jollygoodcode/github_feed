@@ -12,11 +12,13 @@ class GithubFeed
 
     comments =
       events.map do |event|
-        next if event["type"] != "IssueCommentEvent"
+        # next if event["type"] != "IssueCommentEvent"
 
-        comment = "#{Date.parse(event['created_at']).strftime("%d %b %Y")}\n"
-        comment += "#{event['actor']['login']} made a comment on Issue ##{event['payload']['issue']['number']}\n"
-        comment += "at #{event['payload']['comment']['html_url']}"
+        # comment = "#{Date.parse(event['created_at']).strftime("%d %b %Y")}\n"
+        # comment += "#{event['actor']['login']} made a comment on Issue ##{event['payload']['issue']['number']}\n"
+        # comment += "at #{event['payload']['comment']['html_url']}"
+
+        event.to_s
       end
 
     comments.compact.join("\n")
