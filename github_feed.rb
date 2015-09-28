@@ -23,8 +23,8 @@ class GithubEvent
   def self.all(repo_name, only: nil)
     events =
       JSON.parse(HTTP.get("https://api.github.com/repos/#{repo_name}/events"))
-    events.map!    { |event| GithubEvent.new(event) }
-    events.select! { |event| event.type == only } if only
+    events = events.map    { |event| GithubEvent.new(event) }
+    events = events.select { |event| event.type == only } if only
     events
   end
 

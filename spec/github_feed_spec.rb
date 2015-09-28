@@ -34,29 +34,40 @@ RSpec.describe GithubEvent do
   let(:fake_json) { File.read("spec/fixtures/events.json") }
 
   describe ".all" do
-    before do
-      stub_request(
-        :get, "https://api.github.com/repos/rails/rails/events"
-      ).with(
-        headers: { "User-Agent" => "http.rb/0.9.7" }
-      ).to_return(
-        status: 200, body: fake_json
-      )
+    context "webmock" do
+      before do
+        stub_request(
+          :get, "https://api.github.com/repos/rails/rails/events"
+        ).with(
+          headers: { "User-Agent" => "http.rb/0.9.7" }
+        ).to_return(
+          status: 200, body: fake_json
+        )
+      end
+
+      it "returns results from API" do
+        events = GithubEvent.all("rails/rails")
+
+        expect(events.count).to eq 30
+        expect(events.first).to be_an_instance_of(GithubEvent)
+        expect(events.first.raw_data).to eq JSON.parse(fake_json).first
+      end
     end
 
-    it "returns results from API" do
-      events = GithubEvent.all("rails/rails")
+    context "doubles" do
+      before do
+        allow(HTTP).to receive(:get) { HTTP }
+      end
 
-      expect(events.count).to eq 30
-      expect(events.first).to be_an_instance_of(GithubEvent)
-      expect(events.first.raw_data).to eq JSON.parse(fake_json).first
-    end
+      it "filters results" do
+        fake_events = double(:events)
+        expect(JSON).to receive(:parse) { fake_events }
+        allow(fake_events).to receive_message_chain(:map, :select) { fake_events }
 
-    it "filters results" do
-      events = GithubEvent.all("rails/rails", only: "IssueCommentEvent")
+        events = GithubEvent.all("rails/rails", only: "IssueCommentEvent")
 
-      expect(events.count).to eq 10
-      expect(events.map(&:type).uniq).to eq ["IssueCommentEvent"]
+        expect(events).to eq fake_events
+      end
     end
   end
 
