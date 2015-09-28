@@ -9,7 +9,7 @@ class GithubFeed
 
   def recent_comments
     events = GithubEvent.all(@repo_name, only: "IssueCommentEvent")
-    events.map { |event| event.to_s }.join("\n")
+    events.map { |event| event.render }.join("\n")
   end
 end
 
@@ -32,7 +32,7 @@ class GithubEvent
     raw_data["type"]
   end
 
-  def to_s
+  def render
     "#{Date.parse(raw_data['created_at']).strftime("%d %b %Y")}\n" \
     "#{raw_data['actor']['login']} made a comment on Issue ##{raw_data['payload']['issue']['number']}\n" \
     "at #{raw_data['payload']['comment']['html_url']}"

@@ -11,9 +11,9 @@ RSpec.describe GithubFeed do
   end
 
   describe "#recent_comments" do
-    let(:fake_events) do
-      [double(:event, to_s: "abc"), double(:event, to_s: "def")]
-    end
+    let(:event_1) { spy(:event) }
+    let(:event_2) { spy(:event) }
+    let(:fake_events) { [ event_1, event_2 ] }
 
     before do
       expect(GithubEvent).to receive(:all)
@@ -22,10 +22,10 @@ RSpec.describe GithubFeed do
 
     it "prints from API" do
       feed = GithubFeed.new("rails/rails")
-      comments = feed.recent_comments
+      feed.recent_comments
 
-      expect(GithubEvent).to have_received(:all)
-      expect(comments).to match "abc\ndef"
+      expect(event_1).to have_received(:render)
+      expect(event_2).to have_received(:render)
     end
   end
 end
@@ -66,7 +66,7 @@ RSpec.describe GithubEvent do
     it "formats data" do
       expected = "27 Sep 2015\ntimbreitkreutz made a comment on Issue #20602\nat https://github.com/rails/rails/issues/20602#issuecomment-143573857"
 
-      expect(event.to_s).to eq expected
+      expect(event.render).to eq expected
     end
   end
 end
