@@ -22,8 +22,10 @@ RSpec.describe GithubFeed do
 
     it "prints from API" do
       feed = GithubFeed.new("rails/rails")
+      comments = feed.recent_comments
 
-      expect(feed.recent_comments).to match "abc\ndef"
+      expect(GithubEvent).to have_received(:all)
+      expect(comments).to match "abc\ndef"
     end
   end
 end
