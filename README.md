@@ -10,15 +10,18 @@ feed = GithubFeed.new("rails/rails")
 feed.recent_comments
 ```
 
-## Format:
+## Format
 
+```
 <date, format>
-<name> made a comment on Issue #<issue number> 
+<name> made a comment on Issue #<issue number>
 at <link>
 > <body at length 30>
+```
 
-## Example:
+## Example
 
+```
 26 Sep 2015
 rails-bot made a comment on Issue #123456
 at https://github.com/rails/rails/pull/123456#issuecomment-123
@@ -30,6 +33,7 @@ at https://github.com/rails/rails/pull/456789#issuecomment-123
 > lorem ipsum..
 
 ....
+```
 
 ## API
 
